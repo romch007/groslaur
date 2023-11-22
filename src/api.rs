@@ -34,7 +34,7 @@ pub struct PackageInfo {
 
 #[derive(Debug, Deserialize)]
 #[allow(dead_code)]
-pub struct ApiResponse {
+pub struct Response {
     pub resultcount: u32,
     pub results: Vec<PackageInfo>,
     #[serde(rename = "type")]
@@ -43,7 +43,7 @@ pub struct ApiResponse {
     pub error: Option<String>,
 }
 
-pub fn get_packages_info(packages: &[String]) -> Result<ApiResponse> {
+pub fn get_packages_info(packages: &[String]) -> Result<Response> {
     let mut path = API_URL.to_owned();
     path.push_str("info?");
 
@@ -66,7 +66,7 @@ pub fn get_packages_info(packages: &[String]) -> Result<ApiResponse> {
     Ok(body)
 }
 
-pub fn search_package(term: &str) -> Result<ApiResponse> {
+pub fn search_package(term: &str) -> Result<Response> {
     let mut path = API_URL.to_owned();
     path.push_str("search/");
     path.push_str(term);

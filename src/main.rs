@@ -29,7 +29,7 @@ fn install_packages(packages: Vec<String>) -> Result<()> {
     let mut invalid_packages = false;
     for wanted_package in packages {
         if !found_packages.contains(&wanted_package.as_str()) {
-            println!("Package '{}' not found", wanted_package);
+            println!("Package '{wanted_package}' not found");
             invalid_packages = true;
         }
     }
@@ -97,7 +97,7 @@ fn update_packages() -> Result<()> {
     println!("{}", "Finding packages to update...".bold());
 
     let paths = std::fs::read_dir(".")?
-        .filter_map(|dir_entry| dir_entry.ok())
+        .filter_map(std::result::Result::ok)
         .filter(|dir_entry| match dir_entry.file_type() {
             Ok(file_type) => file_type.is_dir(),
             Err(_) => false,
@@ -129,7 +129,7 @@ fn update_packages() -> Result<()> {
 
     for package in &packages_to_update {
         println!();
-        println!("-- Building {}...", package);
+        println!("-- Building {package}...");
 
         makepkg::build(package)?;
 
@@ -144,7 +144,7 @@ fn update_packages() -> Result<()> {
 
     for package in &packages_to_update {
         println!();
-        println!("-- Cleaning up {}...", package);
+        println!("-- Cleaning up {package}...");
         git::clean(package)?;
     }
 
@@ -152,10 +152,10 @@ fn update_packages() -> Result<()> {
 }
 
 fn search_package(term: &str) -> Result<()> {
-    let mut response = api::search_package(term).unwrap();
+    let mut response = api::search_package(term)?;
 
     if let Some(error_mesage) = response.error {
-        println!("{}", error_mesage);
+        println!("{error_mesage}");
         return Ok(());
     }
 
@@ -186,6 +186,6 @@ fn main() {
         cli::Command::Install { packages } => install_packages(packages),
         cli::Command::Search { term } => search_package(&term),
     } {
-        println!("error occured: {}", error);
+        println!("error occured: {error}");
     }
 }

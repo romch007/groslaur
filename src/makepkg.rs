@@ -22,9 +22,8 @@ pub fn find_pkg_files(dir: impl AsRef<Path>) -> Result<Vec<PathBuf>> {
     for entry in dir {
         let entry = entry?;
         let os_filename = entry.file_name();
-        let filename = match os_filename.to_str() {
-            Some(filename) => filename,
-            None => continue,
+        let Some(filename) = os_filename.to_str() else {
+            continue;
         };
         if filename.ends_with(".pkg.tar.zst") {
             pkgs.push(entry.path());
