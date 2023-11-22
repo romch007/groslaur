@@ -1,0 +1,16 @@
+[package]
+name = "groslaur"
+authors = ["Romain Chardiny <romain.chardiny@gmail.com>"]
+license = "MIT"
+version = "0.1.0"
+description = "Shitty AUR helper"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.75"
+clap = { version = "4.4.8", features = ["derive"] }
+colored = "2.0.4"
+reqwest = { version = "0.11.22", features = ["blocking", "json"] }
+serde = { version = "1.0.193", features = ["derive"] }
