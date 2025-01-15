@@ -3,7 +3,7 @@ use std::{path::PathBuf, process::Command};
 
 pub fn strip_package_version(package: &str) -> &str {
     &package[..package
-        .find(|ch: char| ch == '>' || ch == '=' || ch == '<')
+        .find(['>', '=', '<'])
         .unwrap_or(package.len())]
 }
 
